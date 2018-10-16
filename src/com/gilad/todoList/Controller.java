@@ -42,5 +42,9 @@ public class Controller {
 
     }
 
-
+    @FXML
+    public void handleClickListView(){
+        TodoIteam iteam = (TodoIteam) todoListView.getSelectionModel().getSelectedItem();
+        System.out.println("The selectes item is" + iteam);
+    }
 }
