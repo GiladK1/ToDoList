@@ -4,6 +4,7 @@ import com.gilad.todoList.datamodel.TodoIteam;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -13,7 +14,9 @@ import java.util.List;
 public class Controller {
     private List<TodoIteam> todoIteams;
     @FXML
-    private ListView todoListView;
+    private ListView<TodoIteam> todoListView;
+    @FXML
+    private TextArea iteamDeatailsTextArea;
 
 
 
@@ -44,7 +47,13 @@ public class Controller {
 
     @FXML
     public void handleClickListView(){
-        TodoIteam iteam = (TodoIteam) todoListView.getSelectionModel().getSelectedItem();
-        System.out.println("The selectes item is" + iteam);
+        TodoIteam iteam =  todoListView.getSelectionModel().getSelectedItem();
+        //System.out.println("The selectes item is" + iteam);
+        StringBuilder sb = new StringBuilder(iteam.getDetails());
+        sb.append("\n\n\n\n");
+        sb.append("Due:");
+        sb.append(iteam.getDeadline().toString());
+        iteamDeatailsTextArea.setText(sb.toString());
     }
+
 }
