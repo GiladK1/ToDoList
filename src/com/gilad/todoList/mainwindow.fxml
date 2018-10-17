@@ -2,14 +2,33 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
 <BorderPane fx:controller="com.gilad.todoList.Controller"
             xmlns:fx="http://javafx.com/fxml" >
     <left>
-        <ListView fx:id="todoListView" onMouseClicked="#handleClickListView">
+        <ListView fx:id="todoListView" >
 
         </ListView>
     </left>
     <center>
-        <TextArea fx:id="iteamDeatailsTextArea"/>
+        <VBox>
+            <TextArea fx:id="iteamDeatailsTextArea" VBox.vgrow="ALWAYS"/>
+         <HBox style="-fx-background-color: white">
+            <Label text="Due:" style="-fx-background-color:white">
+                <font>
+                    <Font name="Times New Roman bold" size="20"/>
+                </font>
+            </Label>
+             <Label fx:id="deadLineLabel" style="-fx-background-color:white">
+                 <font>
+                     <Font name="Times New Roman bold" size="20"/>
+                 </font>
+             </Label>
+         </HBox>
+        </VBox>
+
     </center>
 </BorderPane>
