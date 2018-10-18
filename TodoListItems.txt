@@ -1,0 +1,4 @@
+Call my best friend Avi	Phone number : XXXXXXXXXX	14-10-2018
+Fix my car	I need to fix my car asap !	17-10-2018
+Finish my program	I need to review my code again !	31-10-2018
+Todo List !	This is my AMAZING TodoList using JavaFX !	31-10-2018
