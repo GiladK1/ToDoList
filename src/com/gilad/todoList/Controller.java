@@ -1,19 +1,18 @@
 package com.gilad.todoList;
 
+import com.gilad.todoList.datamodel.TodoData;
 import com.gilad.todoList.datamodel.TodoIteam;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextArea;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 
-import java.time.LocalDate;
-import java.time.Month;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Controller {
     private List<TodoIteam> todoIteams;
@@ -23,12 +22,13 @@ public class Controller {
     private TextArea iteamDeatailsTextArea;
     @FXML
     private Label deadLineLabel;
-
+    @FXML
+    private BorderPane mainBorderPane;
 
 
 
     public void initialize(){
-        TodoIteam iteam1=new TodoIteam("Gilad birthday card","But a 30th birthday card for john",
+        /*TodoIteam iteam1=new TodoIteam("Gilad birthday card","But a 30th birthday card for john",
                 LocalDate.of(2018, Month.OCTOBER,16));
         TodoIteam iteam2=new TodoIteam("Gilad Doctor Appointment","See Dr.Smith at 123 MAin Street",
                 LocalDate.of(2018, Month.MAY,23));
@@ -45,6 +45,11 @@ public class Controller {
         todoIteams.add(iteam3);
         todoIteams.add(iteam4);
         todoIteams.add(iteam5);
+        TodoData.getInstance().setTodoIteams(todoIteams);
+*/
+
+
+
 
         todoListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TodoIteam>() {
             @Override
@@ -58,9 +63,38 @@ public class Controller {
             }
         });
 
-        todoListView.getItems().setAll(todoIteams);
+        todoListView.getItems().setAll(TodoData.getInstance().getTodoIteams());
         todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         todoListView.getSelectionModel().selectFirst();
+
+    }
+
+    @FXML
+    public void  showNewItemDialog(){
+      Dialog<ButtonType> dialog =new Dialog<>();
+      dialog.initOwner(mainBorderPane.getScene().getWindow());
+      dialog.setTitle("Add new TodoItem");
+      dialog.setHeaderText("Use this dialog to create a new Todo item");
+      FXMLLoader fxmlLoader = new FXMLLoader();
+      fxmlLoader.setLocation(getClass().getResource("todoItemDialog.fxml"));
+      try{
+        dialog.getDialogPane().setContent(fxmlLoader.load());
+      }catch (IOException e){e.printStackTrace();return;}
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add((ButtonType.CANCEL));
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if(result.isPresent() && result.get()==ButtonType.OK){
+            DialogController controller=fxmlLoader.getController();
+            TodoIteam newItem = controller.processResults();
+            todoListView.getItems().setAll(TodoData.getInstance().getTodoIteams());
+            todoListView.getSelectionModel().select(newItem);
+            System.out.println("OK");
+        }
+        else {
+            System.out.println("CANCEL");
+        }
     }
 
     @FXML
@@ -68,12 +102,7 @@ public class Controller {
         TodoIteam iteam =  todoListView.getSelectionModel().getSelectedItem();
         iteamDeatailsTextArea.setText(iteam.getDetails());
         deadLineLabel.setText(iteam.getDeadline().toString());
-        //System.out.println("The selectes item is" + iteam);
-        //StringBuilder sb = new StringBuilder(iteam.getDetails());
-        //sb.append("\n\n\n\n");
-        // sb.append("Due:");
-        // sb.append(iteam.getDeadline().toString());
-        //iteamDeatailsTextArea.setText(sb.toString());
+
     }
 
 }
